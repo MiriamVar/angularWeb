@@ -1,0 +1,25 @@
+<h2>{{title}}</h2>
+<div *ngIf="alert" class="alert alert-danger" role="alert">
+  {{alert}}
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Meno</th>
+      <th>E-mail</th>
+      <th>Prihlásenie</th>
+      <th>Heslo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users" (click)="selectUser(user)">
+      <td>{{user.id}}</td>
+      <td>{{user.name}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.getSkLastLogin()}}</td>
+      <td>{{user.password}}</td>
+    </tr>
+  </tbody>
+</table>
+<p *ngIf="selectedUser">Selected user: {{selectedUser.name}}</p>
