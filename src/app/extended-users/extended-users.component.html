@@ -1,4 +1,4 @@
-<h2>{{title}}</h2>
+<h2>Rozsireni pouzivatelia</h2>
 <div *ngIf="alert" class="alert alert-danger" role="alert"> 
   {{alert}}
 </div>
@@ -8,13 +8,19 @@
       <th>Id</th>
       <th>Meno</th>
       <th>E-mail</th>
+      <th>Prihlásenie</th>
+      <th>Aktivny</th>
+      <th>Skupiny</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users" (click)="selectUser(user)">
+    <tr *ngFor="let user of users">
       <td>{{user.id}}</td>
       <td>{{user.name}}</td>
       <td>{{user.email}}</td>
+      <td>{{user.getSkLastLogin()}}</td>
+      <td>{{user.active}}</td>
+      <td>skupiny</td>
     </tr>
   </tbody>
 </table>

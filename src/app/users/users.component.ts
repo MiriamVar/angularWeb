@@ -34,8 +34,8 @@ export class UsersComponent implements OnInit {
 
   updateUsers() {
     this.usersServerService.getUsers().subscribe(
-      (u: Array<User>) => (this.users = u),
-      error => {
+      (u: Array<User>) => (this.users = u), //1.parameter odchytava data
+      error => { //2.parameter odchytava chyby
         if (error instanceof HttpErrorResponse) {
           if (error.status === 0) {
             this.alert = 'Server je nedostupný';
