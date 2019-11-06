@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
  auth = new Auth();
- alert = '';
 
   constructor(
     private usersServerService: UsersServerService,
@@ -37,19 +36,8 @@ export class LoginComponent implements OnInit {
     .login(this.auth)
     .subscribe(
       ok =>{  //1. parameter odchytava data
-        if (ok){
-          console.log("login successfully done "+ ok)
-          this.router.navigateByUrl('/users');
-        } else{ 
-          this.alert = "Zly login alebo heslo"
-      }},
-      error => { //2. parameter odchytava chyby 
-        if (error instanceof HttpErrorResponse) {
-          if (error.status === 0) {
-            this.alert = 'Server je nedostupný';
-          }
-        }
-    }
+          this.router.navigateByUrl('/extended-users');
+        } 
     );
    }
 

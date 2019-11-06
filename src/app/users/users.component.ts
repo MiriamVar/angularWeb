@@ -11,18 +11,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class UsersComponent implements OnInit {
   title = 'Zoznam používateľov';
-  users = [
-    new User('Martin', 'martin@jano.sk'),
-    new User(
-      'Klaudia',
-      'klaudia@gmail.com',
-      undefined,
-      new Date('2019-10-04T11:30:00'),
-      'somdoma'
-    )
-  ];
+  users = [];
   selectedUser: User = null;
-  alert = null;
   //users$: Observable<Array<User>>;
 
   constructor(private usersServerService: UsersServerService) {}
@@ -35,14 +25,6 @@ export class UsersComponent implements OnInit {
   updateUsers() {
     this.usersServerService.getUsers().subscribe(
       (u: Array<User>) => (this.users = u), //1.parameter odchytava data
-      error => { //2.parameter odchytava chyby
-        if (error instanceof HttpErrorResponse) {
-          if (error.status === 0) {
-            this.alert = 'Server je nedostupný';
-          }
-        }
-        console.error(JSON.stringify(error));
-      }
     );
   }
 

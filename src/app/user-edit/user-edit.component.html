@@ -1,0 +1,64 @@
+<!-- Modal -->
+<form (ngSubmit)="onSubmit()">
+<div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          editovany user: {{showUser()}}
+            <div class="form-group row">
+                <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                    <input type="text" id="form35" class="form-control" [(ngModel)]="user.name" name="name" placeholder="Write your name" required>
+                </div>
+              </div>
+
+            
+              <div class="form-group row">
+                <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" id="form25" class="form-control" [(ngModel)]="user.email" name="email" placeholder="Write your email" required>
+                </div>
+              </div>
+
+
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" id="form25" class="form-control" [(ngModel)]="user.password" name="password" placeholder="Write your password">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-sm-2">Active</div>
+                <div class="col-sm-10">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gridCheck1" [(ngModel)]="user.active" name="active" required>
+                  </div>
+                </div>
+              </div>
+
+              <label for="inputGroups" >Groups: </label>
+              <div class="form-group row">
+                <div *ngFor="let item of groups | keyvalue" class="col-sm-10" >
+                    <label>
+                        <input  type="checkbox" id="gridCheck1" [checked]="item.value" name="grchb" (change)="toggleGroup($event,item.key)">
+                        {{item.key.name}}
+                    </label>
+                </div>
+              </div>
+      
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

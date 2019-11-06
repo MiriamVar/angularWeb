@@ -10,9 +10,11 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ExtendedUsersComponent } from './extended-users/extended-users.component';
+import { MessageComponent } from './message/message.component';
+import { UserEditComponent } from './user-edit/user-edit.component';
 
 @NgModule({
-  declarations: [AppComponent, UsersComponent, LoginComponent, PageNotFoundComponent, NavbarComponent, ExtendedUsersComponent],
+  declarations: [AppComponent, UsersComponent, LoginComponent, PageNotFoundComponent, NavbarComponent, ExtendedUsersComponent, MessageComponent, UserEditComponent],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent]

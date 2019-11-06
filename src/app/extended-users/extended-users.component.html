@@ -20,8 +20,15 @@
       <td>{{user.email}}</td>
       <td>{{user.getSkLastLogin()}}</td>
       <td>{{user.active}}</td>
-      <td>skupiny</td>
+      <td><span *ngFor= "let group of user.groups">
+        {{group.name}},
+      </span></td>
     </tr>
   </tbody>
 </table>
-<p *ngIf="selectedUser">Selected user: {{selectedUser.name}}</p>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userEditModal">
+ Add user
+</button>
+<app-user-edit></app-user-edit>

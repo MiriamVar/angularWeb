@@ -1,29 +1,21 @@
 import { Injectable } from '@angular/core';
 import { User } from 'src/entities/user';
-import { Observable, of, throwError, Subscriber } from 'rxjs';
+import { Observable, of, throwError, Subscriber, EMPTY } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Auth } from 'src/entities/auth';
+import { MessageService } from './message.service';
+import { Group } from 'src/entities/group';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersServerService {
   url = 'http://itsovy.sk:8080/';
-  users = [
-    new User('JanoService', 'jano@jano.sk', 1),
-    new User('MartinService', 'martin@jano.sk'),
-    new User(
-      'KlaudiaService',
-      'klaudia@gmail.com',
-      undefined,
-      new Date('2019-10-04T11:30:00'),
-      'somdoma'
-    )
-  ];
+  users = [];
   loggedUserSubscriber: Subscriber<string>;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private messageService: MessageService) {}
 
   get token(): string{
     return localStorage.getItem('token');
@@ -55,21 +47,20 @@ export class UsersServerService {
   });
   }
 
-
-  getLocalUsers(): Observable<Array<User>> {
-    return of(this.users);
-  }
-
   getUsers(): Observable<Array<User>> {
     return this.http
       .get(this.url + 'users')
-      .pipe(map(jsonObj => this.fromJsonToListUsers(jsonObj)));
+      .pipe(map(jsonObj => this.fromJsonToListUsers(jsonObj)),
+      catchError(error => this.httpErrorProcess(error))
+      );
   }
 
   getExtendedUsers(): Observable<Array<User>> {
     return this.http
       .get(this.url + 'users/'+ this.token)
-      .pipe(map(jsonObj => this.fromJsonToListUsers(jsonObj)));
+      .pipe(map(jsonObj => this.fromJsonToListUsers(jsonObj)),
+      catchError(error => this.httpErrorProcess(error))
+      );
   }
 
   private fromJsonToListUsers(jsonObject: any): Array<User> {
@@ -93,6 +84,15 @@ export class UsersServerService {
     return users;
   }
 
+
+  getGroups(): Observable<Array<Group>>{
+    return this.http
+    .get<Group[]>(this.url + 'groups')
+    .pipe(
+    catchError(error => this.httpErrorProcess(error))
+    );
+  }
+
   login(auth: Auth): Observable<boolean>{
    return this.http.post(this.url + 'login', auth, {responseType: "text"})
     .pipe(map(token => {  //map spracuje iba data
@@ -101,13 +101,7 @@ export class UsersServerService {
       this.loggedUserSubscriber.next(this.user);
       return true;
     }),
-    catchError(error => { //catchError Observable metoda .. spracuvava len
-      if(error instanceof HttpErrorResponse && error.status == 401){
-      this.logout();
-      return of(false); //zle heslo alebo meno  .... return of (false) - nema navratove data ale nejaky error
-      }
-    return throwError(error); // nejaká iná chyba
-    })
+    catchError(error => this.httpErrorProcess(error))
     );
   }
 
@@ -115,5 +109,36 @@ export class UsersServerService {
     this.token = null;    
     this.user = null;
     this.loggedUserSubscriber.next(null);
+  }
+
+  httpErrorProcess(error){
+    if(error instanceof HttpErrorResponse ){
+        this.httpErrorToMessage(error);
+        return EMPTY;
+      }else{ 
+        throwError(error); // nejaká iná chyba
+      }
+
+    
+  }
+
+  httpErrorToMessage(error: HttpErrorResponse){
+    if (error.status === 0) {
+      this.messageService.sendMessage('Server je nedostupny');
+      return;
+    }
+    if(error.status >= 400 && error.status <500){
+      if(error.error.errorMessage){
+        this.messageService.sendMessage(error.error.errorMessage)
+      }else{
+        this.messageService.sendMessage(
+          JSON.parse(error.error).errorMessage
+        );
+      }
+      return;
+    }
+    this.messageService.sendMessage(
+      error.message
+    );
   }
 }
