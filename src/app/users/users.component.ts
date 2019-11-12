@@ -10,10 +10,10 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  title = 'Zoznam používateľov';
-  users = [];
-  selectedUser: User = null;
-  //users$: Observable<Array<User>>;
+  private title = 'Zoznam používateľov';
+  private users: User[] = [];
+  private selectedUser;
+  users$: Observable<Array<User>>;
 
   constructor(private usersServerService: UsersServerService) {}
 
@@ -23,12 +23,12 @@ export class UsersComponent implements OnInit {
   }
 
   updateUsers() {
-    this.usersServerService.getUsers().subscribe(
-      (u: Array<User>) => (this.users = u), //1.parameter odchytava data
+    this.usersServerService.getUsersFromLocalHost().subscribe(
+      (u: Array<User>) => (this.users = u) //1.parameter odchytava data
     );
   }
 
-  selectUser(user: User): void {
+  selectUser(user: User) {
     this.selectedUser = user;
   }
 }

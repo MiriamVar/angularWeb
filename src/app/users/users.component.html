@@ -2,6 +2,16 @@
 <div *ngIf="alert" class="alert alert-danger" role="alert"> 
   {{alert}}
 </div>
+<!-- od 6 -12 riadka som nemala-->
+<ul>
+   <li class="list-group-item" *ngFor="let user of users">{{user.name + " " + user.email + " " + user.id}}</li>
+</ul>
+
+<ul>
+  <li *ngFor="let user of users$ | async" (click)="selectUser(user)"> {{user.name}}, {{user.email + " ajoj"}}
+  </li>
+
+</ul>
 <table class="table">
   <thead>
     <tr>

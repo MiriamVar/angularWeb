@@ -10,16 +10,18 @@ import { Group } from 'src/entities/group';
 @Injectable({
   providedIn: 'root'
 })
+
 export class UsersServerService {
-  url = 'http://itsovy.sk:8080/';
-  users = [];
-  loggedUserSubscriber: Subscriber<string>;
+  private url: string = 'http://itsovy.sk:8080/';
+  // users = [];
+  private loggedUserSubscriber: Subscriber<string>;
 
   constructor(private http: HttpClient, private messageService: MessageService) {}
 
   get token(): string{
     return localStorage.getItem('token');
   }
+
   set token(value : string){
     if(value === null){
       localStorage.removeItem('token');
@@ -32,6 +34,7 @@ export class UsersServerService {
   get user(): string{
     return localStorage.getItem('user');
   }
+
   set user(value : string){
     if(value === null){
       localStorage.removeItem('user')
@@ -47,42 +50,49 @@ export class UsersServerService {
   });
   }
 
-  getUsers(): Observable<Array<User>> {
+  getUsersFromLocalHost(): Observable<User[]> {
     return this.http
-      .get(this.url + 'users')
-      .pipe(map(jsonObj => this.fromJsonToListUsers(jsonObj)),
+      .get<User[]>(this.url + 'users')
+      .pipe(map(response => this.handleGetUsersResponse(response)),
       catchError(error => this.httpErrorProcess(error))
       );
   }
 
-  getExtendedUsers(): Observable<Array<User>> {
+  getExtendedUsers(): Observable<User[]> {
     return this.http
-      .get(this.url + 'users/'+ this.token)
-      .pipe(map(jsonObj => this.fromJsonToListUsers(jsonObj)),
+      .get<User[]>(this.url + 'users/'+ this.token)
+      .pipe(map(response => this.handleGetUsersResponse(response)),
       catchError(error => this.httpErrorProcess(error))
       );
   }
 
-  private fromJsonToListUsers(jsonObject: any): Array<User> {
-    const users: Array<User> = [];
-    for (const user of jsonObject) {
-      if(user.groups){
-        users.push(
-          new User(
-            user.name, 
-            user.email, 
-            user.id,
-            new Date(user.lastLogin),
-            user.password,
-            user.active,
-            user.groups
-            ));
-      } else{
-      users.push(new User(user.name, user.email, user.id));
+  private handleGetUsersResponse(jsonUsers): User[] {
+    let remoteUsers: User[] = [];
+    for(let jsonUser of jsonUsers){
+      if(jsonUser.groups){
+        remoteUsers.push(User.clone(jsonUser));
+  
+      } else {
+        remoteUsers.push(new User(jsonUser.name, jsonUser.email, jsonUser.id));
       }
     }
-    return users;
+    
+    return remoteUsers;
   }
+
+  
+  saveUser(user: User): Observable<User>{
+    return this.http.post<User>(this.url + "users/"+ this.token, user)
+    .pipe(map(u => User.clone(u),
+    catchError(error => this.httpErrorProcess(error)))
+    );
+  }
+
+  deleteUser(user: User):Observable<boolean> {
+    return this.http.delete<boolean>(this.url + "user/" + user.id+ "/" + this.token)
+    .pipe(map(_ => true),catchError(error => this.httpErrorProcess(error)));
+   }
+   
 
 
   getGroups(): Observable<Array<Group>>{

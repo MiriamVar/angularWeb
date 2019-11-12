@@ -23,12 +23,14 @@
       <td><span *ngFor= "let group of user.groups">
         {{group.name}},
       </span></td>
+      <td><fa name="pencil" (click)= "editUser(user)"></fa></td>
+      <td><fa name="window-close" (click)= "deleteUser(user)"></fa></td>
     </tr>
   </tbody>
 </table>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userEditModal">
+<button type="button" class="btn btn-primary" (click)="addUser()">
  Add user
 </button>
-<app-user-edit></app-user-edit>
+<app-user-edit (eventPipe)="onEvent($event)"  [actionWithUser]= "actionWithUser" [user]="editedUser" ></app-user-edit>

@@ -11,6 +11,18 @@ export class User {
     public groups: Array<Group> = []
   ) {}
 
+  public static clone(user: User){
+    return new User(
+      user.name, 
+      user.email, 
+      user.id,
+      new Date(user.lastLogin),
+      user.password,
+      user.active,
+      user.groups
+      );
+  }
+
   getSkLastLogin(): string {
     const options = {
       weekday: 'long',

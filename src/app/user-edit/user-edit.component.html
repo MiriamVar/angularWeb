@@ -1,5 +1,5 @@
 <!-- Modal -->
-<form (ngSubmit)="onSubmit()">
+<form (ngSubmit)="onSubmit()" #userForm = "ngForm">
 <div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -14,15 +14,23 @@
             <div class="form-group row">
                 <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                 <div class="col-sm-10">
-                    <input type="text" id="form35" class="form-control" [(ngModel)]="user.name" name="name" placeholder="Write your name" required>
+                    <input type="text" id="form35" class="form-control" [(ngModel)]="user.name" name="name" placeholder="Write your name"
+                     #validne="ngModel"  required [ngClass]="{'is-valid': validne.valid, 'is-invalid': validne.invalid }"> 
+                    <div class="valid-feedback">
+                      Looks good!
+                    </div>
                 </div>
+                
               </div>
 
             
               <div class="form-group row">
                 <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
-                    <input type="email" id="form25" class="form-control" [(ngModel)]="user.email" name="email" placeholder="Write your email" required>
+                    <input type="email" id="form25" class="form-control" [(ngModel)]="user.email" name="email" placeholder="Write your email" required #validno="ngModel" [ngClass]="{'is-valid': validno.valid, 'is-invalid': validno.invalid }">
+                    <div class="valid-feedback">
+                      Looks good!
+                    </div>
                 </div>
               </div>
 
@@ -30,7 +38,10 @@
             <div class="form-group row">
                 <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
                 <div class="col-sm-10">
-                    <input type="password" id="form25" class="form-control" [(ngModel)]="user.password" name="password" placeholder="Write your password">
+                    <input type="password" id="form25" class="form-control" [(ngModel)]="user.password" name="password" placeholder="Write your password" required #validna="ngModel" [ngClass]="{'is-valid': validna.valid, 'is-invalid': validna.invalid }">
+                    <div class="valid-feedback">
+                      Looks good!
+                    </div>
                 </div>
               </div>
 
@@ -56,7 +67,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!userForm.form.valid">Save changes</button>
         </div>
       </div>
     </div>

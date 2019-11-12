@@ -12,10 +12,11 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ExtendedUsersComponent } from './extended-users/extended-users.component';
 import { MessageComponent } from './message/message.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 @NgModule({
   declarations: [AppComponent, UsersComponent, LoginComponent, PageNotFoundComponent, NavbarComponent, ExtendedUsersComponent, MessageComponent, UserEditComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule, AngularFontAwesomeModule],
   providers: [],
   bootstrap: [AppComponent]
 })
