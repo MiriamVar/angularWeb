@@ -1,0 +1,16 @@
+<div *ngIf="group">
+    <h3>
+        Skupina {{group.name}} s ID = {{group.id}}
+    </h3>
+    <p>
+        Prava:
+    </p>
+    <ul>
+        <li *ngFor="let pern of group.permissions">
+            {{pern}}
+        </li>
+    </ul>
+    <button class="btn btn-primary" [routerLink]="['/groups','detail', group.id+1]">Dalsia skupina</button>
+</div>
+
+

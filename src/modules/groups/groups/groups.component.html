@@ -1,0 +1,8 @@
+<ul *ngIf="groups">
+    <li *ngFor= "let group of groups">
+        <a routerLink="/groups/detail/{{group.id}}">{{group.name}}</a>
+        <a routerLink="/groups/edit/{{group.id}}" class="btn btn-secondary btn-sm mx-1">
+          <fa name="pencil"></fa>
+        </a>
+    </li>
+</ul>

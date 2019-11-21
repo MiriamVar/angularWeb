@@ -38,13 +38,15 @@ export class ExtendedUsersComponent implements OnInit {
   deleteUser(user: User){
     this.deleted = user;
     const originalId = user.id;
-    this.usersServerService.deleteUser(user).subscribe(u => {
-        this.users.filter(el => el.id !== originalId);
+    this.usersServerService.deleteUser(user).subscribe(() => {
+        this.users = this.users.filter(el => el.id !== originalId);
     });
     console.log("mal by si odstranit ho");
-    window.location.reload();
-
-  }
+    // window.location.reload();
+ 
+  } 
+  //na vstepu je nic ... v subscribe (() => )
+  // filter vracia nove pole ... nemodifikuje stareeeeeeeee
 
 
   onEvent(user:User) {

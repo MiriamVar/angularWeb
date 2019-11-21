@@ -11,7 +11,10 @@
         </li>  
         <li class="nav-item " *ngIf= "loggedUser;">
             <a class="nav-link" routerLink="/extended-users" routerLinkActive="active">Extended users <span class="sr-only">(current)</span></a>
-          </li>    
+          </li>  
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/groups/home" routerLinkActive="active">Groups</a>
+          </li>  
       </ul>
       <span *ngIf= "loggedUser; else elseBlock">
         <strong>{{loggedUser}} </strong> (<a  [routerLink]="" (click)="logout()">Logout</a>)

@@ -12,8 +12,8 @@ import { Group } from 'src/entities/group';
 })
 
 export class UsersServerService {
-  private url: string = 'http://itsovy.sk:8080/';
-  // users = [];
+  private url: string = 'http://192.168.2.89:8080/';
+  public redirectAfterLogin: string = null;
   private loggedUserSubscriber: Subscriber<string>;
 
   constructor(private http: HttpClient, private messageService: MessageService) {}
@@ -82,16 +82,16 @@ export class UsersServerService {
 
   
   saveUser(user: User): Observable<User>{
-    return this.http.post<User>(this.url + "users/"+ this.token, user)
+    return this.http.post<User>(this.url + 'users/'+ this.token, user)
     .pipe(map(u => User.clone(u),
     catchError(error => this.httpErrorProcess(error)))
     );
   }
 
   deleteUser(user: User):Observable<boolean> {
-    return this.http.delete<boolean>(this.url + "user/" + user.id+ "/" + this.token)
+    return this.http.delete<boolean>(this.url + 'user/' + user.id+ '/' + this.token)
     .pipe(map(_ => true),catchError(error => this.httpErrorProcess(error)));
-   }
+   } // _ predstavuje to co mi prislo .. ale nezaujima ma to 
    
 
 
@@ -101,6 +101,20 @@ export class UsersServerService {
     .pipe(
     catchError(error => this.httpErrorProcess(error))
     );
+  }
+
+  getGroup(id: number): Observable<Group>{
+    return this.http
+    .get<Group>(this.url + 'group/' + id)
+    .pipe(
+    catchError(error => this.httpErrorProcess(error))
+    );
+  }
+
+  saveGroup(group: Group): Observable<Group> {
+    return this.http
+      .post<Group>(this.url + 'groups/' + this.token, group)
+      .pipe(catchError(error => this.httpErrorProcess(error)));
   }
 
   login(auth: Auth): Observable<boolean>{
