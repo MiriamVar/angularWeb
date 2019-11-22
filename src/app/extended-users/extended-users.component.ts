@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/entities/user';
 import { UsersServerService } from 'src/services/users-server.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare var $:any;
 
@@ -13,16 +14,20 @@ export class ExtendedUsersComponent implements OnInit {
 
   users: Array<User> = [];
   editedUser:User = new User('','');
-  constructor(private usersServerService: UsersServerService) {}
+  constructor(private usersServerService: UsersServerService, private router: ActivatedRoute) {}
   deleted: User = null;
 
 
   ngOnInit() {
-    this.usersServerService
-    .getExtendedUsers()
-    .subscribe(
-      users => this.users= users
-    )
+    this.router.data.subscribe(data => {
+      this.users = data.users
+      console.log(data);
+    });
+    // this.usersServerService
+    // .getExtendedUsers()
+    // .subscribe(
+    //   users => this.users= users
+    // )
   }
 
   editUser(user: User){

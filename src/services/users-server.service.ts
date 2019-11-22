@@ -12,7 +12,7 @@ import { Group } from 'src/entities/group';
 })
 
 export class UsersServerService {
-  private url: string = 'http://192.168.2.89:8080/';
+  private url: string = 'http://itsovy.sk:8080/';
   public redirectAfterLogin: string = null;
   private loggedUserSubscriber: Subscriber<string>;
 
@@ -136,6 +136,9 @@ export class UsersServerService {
   }
 
   httpErrorProcess(error){
+    if(error.status == 401){
+      this.logout();
+    }
     if(error instanceof HttpErrorResponse ){
         this.httpErrorToMessage(error);
         return EMPTY;

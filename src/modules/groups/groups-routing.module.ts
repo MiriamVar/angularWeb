@@ -7,16 +7,16 @@ import { GroupHomeComponent } from './group-home/group-home.component';
 import { GroupMenuComponent } from './group-menu/group-menu.component';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CanDeactivateGuard } from 'src/guards/can-deactivate.guard';
+import { GroupDetailResolverServiceGuard } from 'src/guards/group-detail-resolver-service.guard';
 
 
 const routes: Routes = [{
-    path: 'groups',
     component: GroupMenuComponent,
     children: [
       { path: 'home', component: GroupHomeComponent },
       { path: 'list', component: GroupsComponent },
-      { path: 'detail/:id', component: GroupDetailComponent },
-      { path: 'edit/:id', component: GroupEditComponent, canActivate:[AuthGuard], canDeactivate:[CanDeactivateGuard]}
+      { path: 'detail/:id', component: GroupDetailComponent, resolve: {group: GroupDetailResolverServiceGuard} },
+      { path: 'edit/:id', component: GroupEditComponent, canActivate:[AuthGuard], canDeactivate:[CanDeactivateGuard] }
     ]
   }
 

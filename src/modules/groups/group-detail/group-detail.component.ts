@@ -16,12 +16,17 @@ export class GroupDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, private userServerService: UsersServerService) { }
 
   ngOnInit() {
+   this.route.data.subscribe(data => {
+      this.group = data.group
+      console.log(data.group);
+    });
+
     // const id = this.route.snapshot.params["id"];
     // this.userServerService.getGroup(id).subscribe(group => this.group = group);
-    this.route.paramMap.pipe(
-      switchMap((params:ParamMap) => 
-      this.userServerService.getGroup(+params.get('id'))))
-      .subscribe(group => this.group = group);
+    // this.route.paramMap.pipe(
+    //   switchMap((params:ParamMap) => 
+    //   this.userServerService.getGroup(+params.get('id'))))
+    //   .subscribe(group => this.group = group);
 }
 
 

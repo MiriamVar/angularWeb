@@ -17,7 +17,7 @@ import { GroupsModule } from 'src/modules/groups/groups.module';
 
 @NgModule({
   declarations: [AppComponent, UsersComponent, LoginComponent, PageNotFoundComponent, NavbarComponent, ExtendedUsersComponent, MessageComponent, UserEditComponent],
-  imports: [GroupsModule,BrowserModule, HttpClientModule, AppRoutingModule, FormsModule, AngularFontAwesomeModule],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule, FormsModule, AngularFontAwesomeModule],
   providers: [],
   bootstrap: [AppComponent]
 })
